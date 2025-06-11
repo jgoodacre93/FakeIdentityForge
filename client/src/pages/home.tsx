@@ -7,6 +7,7 @@ import { IdentityProfileComponent } from "@/components/identity-profile";
 import { ExportActions } from "@/components/export-actions";
 import { LoadingOverlay } from "@/components/loading-overlay";
 import { ProfileLegend } from "@/components/profile-legend";
+import { RelationshipNetwork } from "@/components/relationship-network";
 import { getProfileTypeColor, getRiskLevelColor } from "@/lib/profile-colors";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, History, BarChart3 } from "lucide-react";
