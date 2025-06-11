@@ -153,6 +153,8 @@ Birth Gender: ${profile.birthGender}
 Gender Identity: ${profile.genderIdentity} (${profile.pronouns})
 Sexual Orientation: ${profile.sexualOrientation}
 Ethnicity: ${profile.ethnicity}
+Nationality: ${profile.nationality}
+Spoken Languages: ${profile.spokenLanguages}
 Marital Status: ${profile.maritalStatus}${profile.spouseName ? ` to ${profile.spouseName}` : ''}
 
 CONTACT INFORMATION
@@ -182,6 +184,12 @@ LinkedIn: ${profile.linkedinUrl}
 Twitter: ${profile.twitterUrl}
 Instagram: ${profile.instagramUrl}
 GitHub: ${profile.githubUrl}
+Facebook: ${profile.facebookUrl}
+TikTok: ${profile.tiktokUrl}
+YouTube: ${profile.youtubeUrl}
+Discord: ${profile.discordUrl}
+Reddit: ${profile.redditUrl}
+Snapchat: ${profile.snapchatUrl}
 OnlyFans: ${profile.onlyfansUrl}
 Dating: ${profile.datingUrl}
 
