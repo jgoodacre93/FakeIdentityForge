@@ -122,8 +122,7 @@ export default function Home() {
                 profiles={currentProfiles}
                 currentProfile={currentProfile}
               />
-
-            <DatabaseExport />
+              <DatabaseExport />
             )}
 
             {/* Recent Profiles */}
