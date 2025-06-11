@@ -53,7 +53,8 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
         'Email', 'Phone', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Citizenship Status',
         'Height', 'Weight', 'Hair Color', 'Eye Color', 'Job Title', 'Company', 'Industry',
         'Annual Income', 'Marital Status', 'Spouse Name', 'Blood Type', 'Medical Conditions',
-        'Bank Name', 'Account Type', 'Credit Score', 'Criminal Record'
+        'Bank Name', 'Account Type', 'Credit Score', 'Credit Card Type', 'Credit Card Number', 
+        'Credit Card Expiry', 'Credit Card CVV', 'Criminal Record'
       ];
       
       const csvContent = [
@@ -89,6 +90,10 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
           `"${profile.bankName}"`,
           `"${profile.accountType}"`,
           `"${profile.creditScore}"`,
+          `"${profile.creditCardType}"`,
+          `"${profile.creditCardNumber}"`,
+          `"${profile.creditCardExpiry}"`,
+          `"${profile.creditCardCvv}"`,
           `"${profile.criminalRecord}"`
         ].join(','))
       ].join('\n');
@@ -175,6 +180,12 @@ Bank: ${profile.bankName}
 Account Type: ${profile.accountType}
 Routing Number: ${profile.routingNumber}
 Credit Score: ${profile.creditScore}
+
+CREDIT CARD INFORMATION
+Card Type: ${profile.creditCardType}
+Card Number: ${profile.creditCardNumber}
+Expiry Date: ${profile.creditCardExpiry}
+CVV: ${profile.creditCardCvv}
 
 CRIMINAL RECORDS
 Status: ${profile.criminalRecord}${profile.criminalHistory ? `\nHistory: ${profile.criminalHistory}` : ''}

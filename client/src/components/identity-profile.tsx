@@ -403,6 +403,32 @@ export function IdentityProfileComponent({
                 </div>
               </div>
 
+              {/* Credit Card Information */}
+              <div className="pt-4 border-t border-gray-200">
+                <h4 className="text-md font-medium text-gray-700 mb-3 flex items-center">
+                  <CreditCard className="mr-2 w-4 h-4" />
+                  Credit Card Information
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Card Type</label>
+                    <p className="text-lg font-medium text-gray-900">{profile.creditCardType}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Card Number</label>
+                    <p className="text-lg font-medium text-gray-900 font-mono">{profile.creditCardNumber}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">Expiry Date</label>
+                    <p className="text-lg font-medium text-gray-900">{profile.creditCardExpiry}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">CVV</label>
+                    <p className="text-lg font-medium text-gray-900">{profile.creditCardCvv}</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Criminal Records */}
               <div className="pt-4 border-t border-gray-200">
                 <h4 className="text-md font-medium text-gray-700 mb-3 flex items-center">
