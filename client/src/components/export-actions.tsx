@@ -49,7 +49,7 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
     setIsExporting(true);
     try {
       const headers = [
-        'Full Name', 'Age', 'Gender Identity', 'Pronouns', 'Sexual Orientation', 'Ethnicity',
+        'Full Name', 'Age', 'Birth Gender', 'Gender Identity', 'Pronouns', 'Sexual Orientation', 'Ethnicity',
         'Email', 'Phone', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Citizenship Status',
         'Height', 'Weight', 'Hair Color', 'Eye Color', 'Job Title', 'Company', 'Industry',
         'Annual Income', 'Marital Status', 'Spouse Name', 'Blood Type', 'Medical Conditions',
@@ -61,6 +61,7 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
         ...profiles.map(profile => [
           `"${profile.fullName}"`,
           profile.age,
+          `"${profile.birthGender}"`,
           `"${profile.genderIdentity}"`,
           `"${profile.pronouns}"`,
           `"${profile.sexualOrientation}"`,
@@ -129,6 +130,7 @@ BASIC INFORMATION
 Full Name: ${profile.fullName}
 Age: ${profile.age}
 Date of Birth: ${profile.dateOfBirth}
+Birth Gender: ${profile.birthGender}
 Gender Identity: ${profile.genderIdentity} (${profile.pronouns})
 Sexual Orientation: ${profile.sexualOrientation}
 Ethnicity: ${profile.ethnicity}

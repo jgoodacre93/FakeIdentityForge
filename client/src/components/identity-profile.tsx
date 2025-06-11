@@ -111,6 +111,10 @@ export function IdentityProfileComponent({
                   <p className="text-lg font-medium text-gray-900">{profile.dateOfBirth}</p>
                 </div>
                 <div>
+                  <label className="text-sm font-medium text-gray-500">Birth Gender</label>
+                  <p className="text-lg font-medium text-gray-900">{profile.birthGender}</p>
+                </div>
+                <div>
                   <label className="text-sm font-medium text-gray-500">Gender Identity</label>
                   <p className="text-lg font-medium text-gray-900">{profile.genderIdentity} ({profile.pronouns})</p>
                 </div>

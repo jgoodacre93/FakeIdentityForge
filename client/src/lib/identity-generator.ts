@@ -18,6 +18,7 @@ import {
 } from "./data-sets";
 
 export function generateIdentityProfile(): InsertIdentityProfile {
+  const birthGender = getRandomElement(["Male", "Female"]);
   const genderData = getRandomElement(genderIdentities);
   const firstName = getRandomElement(firstNames);
   const lastName = getRandomElement(lastNames);
@@ -78,6 +79,7 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     lastName,
     age,
     dateOfBirth,
+    birthGender,
     genderIdentity: genderData.identity,
     pronouns: genderData.pronouns,
     sexualOrientation: getRandomElement(sexualOrientations),
@@ -152,10 +154,71 @@ function generateCriminalHistory(): string {
     "Disorderly Conduct (2018)",
     "Shoplifting (2020)",
     "Public Intoxication (2019)",
-    "Trespassing (2021)"
+    "Trespassing (2021)",
+    "Driving Under the Influence (2020)",
+    "Assault (Misdemeanor) (2017)",
+    "Vandalism (2019)",
+    "Theft (2018)",
+    "Drug Possession (2020)",
+    "Reckless Driving (2021)",
+    "Disturbing the Peace (2019)",
+    "Fraud (2018)",
+    "Embezzlement (2017)",
+    "Burglary (2019)",
+    "Identity Theft (2020)",
+    "Tax Evasion (2018)",
+    "Money Laundering (2017)",
+    "Cybercrime (2021)",
+    "Forgery (2019)",
+    "Perjury (2020)",
+    "Bribery (2018)",
+    "Extortion (2017)",
+    "Stalking (2019)",
+    "Harassment (2020)",
+    "Domestic Violence (2018)",
+    "Child Neglect (2017)",
+    "Elder Abuse (2019)",
+    "Animal Cruelty (2020)",
+    "Environmental Crime (2018)",
+    "Corporate Fraud (2017)",
+    "Securities Fraud (2019)",
+    "Insurance Fraud (2020)",
+    "Medicare Fraud (2018)",
+    "Wire Fraud (2017)",
+    "Mail Fraud (2019)",
+    "Bank Fraud (2020)",
+    "Credit Card Fraud (2018)",
+    "Mortgage Fraud (2017)",
+    "Bankruptcy Fraud (2019)",
+    "Immigration Fraud (2020)",
+    "Welfare Fraud (2018)",
+    "Organized Crime (2017)",
+    "Racketeering (2019)",
+    "Human Trafficking (2020)",
+    "Arms Trafficking (2018)",
+    "Drug Trafficking (2017)",
+    "Weapons Violation (2019)",
+    "Arson (2020)",
+    "Kidnapping (2018)",
+    "Robbery (2017)",
+    "Aggravated Assault (2019)",
+    "Sexual Assault (2020)",
+    "Manslaughter (2018)",
+    "Vehicular Homicide (2017)",
+    "Hate Crime (2019)",
+    "Terrorism (2020)",
+    "Espionage (2018)",
+    "Treason (2017)"
   ];
-  const count = getRandomNumber(1, 3);
-  return Array.from({ length: count }, () => getRandomElement(offenses)).join(", ");
+  const count = getRandomNumber(1, 4);
+  const selectedOffenses = [];
+  const shuffled = [...offenses].sort(() => 0.5 - Math.random());
+  
+  for (let i = 0; i < count && i < shuffled.length; i++) {
+    selectedOffenses.push(shuffled[i]);
+  }
+  
+  return selectedOffenses.join(", ");
 }
 
 export function generateMultipleProfiles(count: number): InsertIdentityProfile[] {
