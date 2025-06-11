@@ -1,5 +1,5 @@
 
-const { Pool } = require('pg');
+import { Pool } from 'pg';
 
 async function setupLocalDatabase() {
   // Connect to PostgreSQL server (not specific database)
