@@ -82,6 +82,90 @@ function generateCreditCardCvv(cardType: { name: string; prefix: string; length:
   return Array.from({ length: cvvLength }, () => getRandomNumber(0, 9)).join('');
 }
 
+function generateSocialMediaProfiles(firstName: string, lastName: string): string {
+  const profiles = [];
+  const numProfiles = getRandomNumber(4, 8); // Generate 4-8 social media profiles
+  const selectedPlatforms = [];
+  
+  // Always include the most common platforms
+  const commonPlatforms = ["Facebook", "Instagram", "Twitter/X"];
+  selectedPlatforms.push(...commonPlatforms);
+  
+  // Add additional random platforms
+  while (selectedPlatforms.length < numProfiles) {
+    const platform = getRandomElement(socialMediaPlatforms);
+    if (!selectedPlatforms.includes(platform)) {
+      selectedPlatforms.push(platform);
+    }
+  }
+  
+  for (const platform of selectedPlatforms) {
+    const baseUsername = getRandomElement(socialMediaUsernames);
+    const usernameVariations = [
+      baseUsername,
+      `${baseUsername}_${getRandomNumber(10, 99)}`,
+      `${firstName.toLowerCase()}_${baseUsername}`,
+      `${baseUsername}_${lastName.toLowerCase()}`,
+      `${firstName.toLowerCase()}${getRandomNumber(10, 999)}`,
+      `${baseUsername}${getRandomNumber(2000, 2024)}`
+    ];
+    
+    const username = getRandomElement(usernameVariations);
+    const followers = getRandomNumber(50, 50000);
+    const following = getRandomNumber(100, 2000);
+    const posts = getRandomNumber(20, 5000);
+    
+    profiles.push(`${platform}: @${username} (${followers.toLocaleString()} followers, ${following} following, ${posts} posts)`);
+  }
+  
+  return profiles.join('\n');
+}
+
+function generateAdultSiteProfiles(firstName: string, genderIdentity: string): string {
+  const profiles = [];
+  const numProfiles = getRandomNumber(2, 6); // Generate 2-6 adult site profiles
+  const selectedPlatforms = [];
+  
+  // Always include OnlyFans as it's most common
+  selectedPlatforms.push("OnlyFans");
+  
+  // Add additional random platforms
+  while (selectedPlatforms.length < numProfiles) {
+    const platform = getRandomElement(adultPlatforms);
+    if (!selectedPlatforms.includes(platform)) {
+      selectedPlatforms.push(platform);
+    }
+  }
+  
+  for (const platform of selectedPlatforms) {
+    const baseUsername = getRandomElement(adultUsernames);
+    const usernameVariations = [
+      baseUsername,
+      `${baseUsername}${getRandomNumber(10, 99)}`,
+      `${firstName.toLowerCase()}_${baseUsername}`,
+      `${baseUsername}_vip`,
+      `${baseUsername}_official`,
+      `real_${baseUsername}`
+    ];
+    
+    const username = getRandomElement(usernameVariations);
+    const subscribers = getRandomNumber(100, 100000);
+    const monthlyEarnings = getRandomNumber(500, 50000);
+    const contentCount = getRandomNumber(50, 2000);
+    
+    let profileType = "Content Creator";
+    if (platform.includes("Cam") || platform.includes("Live") || platform.includes("Chat")) {
+      profileType = "Live Performer";
+    } else if (platform.includes("Hub") || platform.includes("Videos")) {
+      profileType = "Video Content";
+    }
+    
+    profiles.push(`${platform}: @${username} (${subscribers.toLocaleString()} subscribers, $${monthlyEarnings.toLocaleString()}/month, ${contentCount} content items, ${profileType})`);
+  }
+  
+  return profiles.join('\n');
+}
+
 export function generateIdentityProfile(): InsertIdentityProfile {
   const birthGender = getRandomElement(["Male", "Female"]);
   const genderData = getRandomElement(genderIdentities);
@@ -184,12 +268,8 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     maritalStatus,
     spouseName,
     
-    linkedinUrl: `linkedin.com/in/${username}`,
-    twitterUrl: `twitter.com/${username}`,
-    instagramUrl: `instagram.com/${username}`,
-    githubUrl: `github.com/${username}`,
-    onlyfansUrl: `onlyfans.com/${username}_premium`,
-    datingUrl: `seekingarrangement.com/${username}`,
+    socialMediaProfiles: generateSocialMediaProfiles(firstName, lastName),
+    adultSiteProfiles: generateAdultSiteProfiles(firstName, genderData.identity),
     
     bloodType: getRandomElement(bloodTypes),
     medicalConditions: conditions,

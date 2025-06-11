@@ -52,9 +52,9 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
         'Full Name', 'Age', 'Birth Gender', 'Gender Identity', 'Pronouns', 'Sexual Orientation', 'Ethnicity',
         'Email', 'Phone', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Citizenship Status',
         'Height', 'Weight', 'Hair Color', 'Eye Color', 'Job Title', 'Company', 'Industry',
-        'Annual Income', 'Marital Status', 'Spouse Name', 'Blood Type', 'Medical Conditions',
-        'Bank Name', 'Account Type', 'Credit Score', 'Credit Card Type', 'Credit Card Number', 
-        'Credit Card Expiry', 'Credit Card CVV', 'Criminal Record'
+        'Annual Income', 'Marital Status', 'Spouse Name', 'Social Media Profiles', 'Adult Site Profiles',
+        'Blood Type', 'Medical Conditions', 'Bank Name', 'Account Type', 'Credit Score', 
+        'Credit Card Type', 'Credit Card Number', 'Credit Card Expiry', 'Credit Card CVV', 'Criminal Record'
       ];
       
       const csvContent = [
@@ -85,6 +85,8 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
           `"${profile.annualIncome}"`,
           `"${profile.maritalStatus}"`,
           `"${profile.spouseName || ''}"`,
+          `"${profile.socialMediaProfiles.replace(/\n/g, '; ')}"`,
+          `"${profile.adultSiteProfiles.replace(/\n/g, '; ')}"`,
           `"${profile.bloodType}"`,
           `"${profile.medicalConditions}"`,
           `"${profile.bankName}"`,
@@ -163,13 +165,11 @@ Company: ${profile.company}
 Industry: ${profile.industry}
 Annual Income: ${profile.annualIncome}
 
-ONLINE PRESENCE
-LinkedIn: ${profile.linkedinUrl}
-Twitter: ${profile.twitterUrl}
-Instagram: ${profile.instagramUrl}
-GitHub: ${profile.githubUrl}
-OnlyFans: ${profile.onlyfansUrl}
-Dating: ${profile.datingUrl}
+SOCIAL MEDIA PROFILES
+${profile.socialMediaProfiles}
+
+ADULT PLATFORM PROFILES
+${profile.adultSiteProfiles}
 
 HEALTH INFORMATION
 Blood Type: ${profile.bloodType}

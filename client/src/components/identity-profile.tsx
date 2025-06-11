@@ -294,50 +294,28 @@ export function IdentityProfileComponent({
           <CollapsibleContent>
             <CardContent className="pt-0">
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center">
-                    <Linkedin className="text-blue-600 mr-3 w-5 h-5" />
-                    <span className="font-medium text-gray-900">LinkedIn</span>
+                <div>
+                  <h4 className="text-md font-medium text-gray-700 mb-3 flex items-center">
+                    <Globe className="mr-2 w-4 h-4" />
+                    Social Media Profiles
+                  </h4>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono leading-relaxed">
+                      {profile.socialMediaProfiles}
+                    </pre>
                   </div>
-                  <span className="text-blue-600">{profile.linkedinUrl}</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center">
-                    <Twitter className="text-blue-400 mr-3 w-5 h-5" />
-                    <span className="font-medium text-gray-900">Twitter</span>
-                  </div>
-                  <span className="text-blue-600">{profile.twitterUrl}</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center">
-                    <Instagram className="text-pink-500 mr-3 w-5 h-5" />
-                    <span className="font-medium text-gray-900">Instagram</span>
-                  </div>
-                  <span className="text-blue-600">{profile.instagramUrl}</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center">
-                    <Github className="text-gray-700 mr-3 w-5 h-5" />
-                    <span className="font-medium text-gray-900">GitHub</span>
-                  </div>
-                  <span className="text-blue-600">{profile.githubUrl}</span>
                 </div>
               </div>
               
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <h4 className="text-md font-medium text-gray-700 mb-4 flex items-center">
-                  <Lock className="mr-2 text-gray-500 w-4 h-4" />
+                  <Lock className="mr-2 text-red-500 w-4 h-4" />
                   Adult Platform Profiles
                 </h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                    <span className="font-medium text-gray-900">OnlyFans</span>
-                    <span className="text-blue-600">{profile.onlyfansUrl}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                    <span className="font-medium text-gray-900">Premium Dating</span>
-                    <span className="text-blue-600">{profile.datingUrl}</span>
-                  </div>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono leading-relaxed">
+                    {profile.adultSiteProfiles}
+                  </pre>
                 </div>
               </div>
             </CardContent>
