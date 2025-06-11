@@ -37,6 +37,7 @@ const platforms = [
 
 export function SocialMediaPreview({ profile }: SocialMediaPreviewProps) {
   const [selectedPlatform, setSelectedPlatform] = useState("facebook");
+  const [isMobileView, setIsMobileView] = useState(true);
 
   const getProfileImage = () => {
     // Generate a consistent avatar based on profile data
@@ -525,32 +526,62 @@ export function SocialMediaPreview({ profile }: SocialMediaPreviewProps) {
         </p>
       </CardHeader>
       <CardContent>
-        {/* Platform Selector */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {platforms.map((platform) => {
-            const Icon = platform.icon;
-            const isActive = selectedPlatform === platform.id;
-            
-            return (
-              <Button
-                key={platform.id}
-                variant={isActive ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedPlatform(platform.id)}
-                className={`flex items-center space-x-2 ${
-                  isActive ? platform.color : 'hover:bg-gray-50'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{platform.name}</span>
-              </Button>
-            );
-          })}
+        {/* Controls */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          {/* Platform Selector */}
+          <div className="flex flex-wrap gap-2">
+            {platforms.map((platform) => {
+              const Icon = platform.icon;
+              const isActive = selectedPlatform === platform.id;
+              
+              return (
+                <Button
+                  key={platform.id}
+                  variant={isActive ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedPlatform(platform.id)}
+                  className={`flex items-center space-x-2 ${
+                    isActive ? platform.color : 'hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{platform.name}</span>
+                </Button>
+              );
+            })}
+          </div>
+
+          {/* View Toggle */}
+          <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <span>View:</span>
+            <Button
+              variant={isMobileView ? "default" : "outline"}
+              size="sm"
+              onClick={() => setIsMobileView(true)}
+              className="text-xs"
+            >
+              Mobile
+            </Button>
+            <Button
+              variant={!isMobileView ? "default" : "outline"}
+              size="sm"
+              onClick={() => setIsMobileView(false)}
+              className="text-xs"
+            >
+              Desktop
+            </Button>
+          </div>
         </div>
 
         {/* Preview */}
-        <div className="max-w-md mx-auto">
-          {renderPreview()}
+        <div className={`mx-auto transition-all duration-300 ${
+          isMobileView ? 'max-w-md' : 'max-w-2xl'
+        }`}>
+          <div className={`transform transition-all duration-300 ${
+            isMobileView ? 'scale-100' : 'scale-110'
+          }`}>
+            {renderPreview()}
+          </div>
         </div>
         
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
