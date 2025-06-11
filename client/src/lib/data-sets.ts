@@ -133,3 +133,31 @@ export function getRandomNumber(min: number, max: number): number {
 export function getRandomBoolean(probability: number = 0.5): boolean {
   return Math.random() < probability;
 }
+
+export const languages = [
+  "English", "Spanish", "Mandarin Chinese", "Hindi", "Arabic", "Bengali", "Portuguese", "Russian", 
+  "Japanese", "Punjabi", "German", "Javanese", "Wu Chinese", "Malay", "Telugu", "Vietnamese", 
+  "Korean", "French", "Marathi", "Tamil", "Urdu", "Turkish", "Italian", "Yue Chinese", "Thai", 
+  "Gujarati", "Jin Chinese", "Min Nan Chinese", "Persian", "Polish", "Pashto", "Kannada", 
+  "Xiang Chinese", "Malayalam", "Sundanese", "Hausa", "Odia", "Burmese", "Hakka Chinese", 
+  "Ukrainian", "Bhojpuri", "Tagalog", "Yoruba", "Maithili", "Uzbek", "Sindhi", "Amharic", 
+  "Fula", "Romanian", "Oromo", "Igbo", "Azerbaijani", "Awadhi", "Gan Chinese", "Cebuano", 
+  "Dutch", "Kurdish", "Serbo-Croatian", "Malagasy", "Saraiki", "Nepali", "Sinhala", "Chittagonian", 
+  "Zhuang", "Khmer", "Turkmen", "Assamese", "Madurese", "Somali", "Marwari", "Magahi", 
+  "Haryanvi", "Hungarian", "Chhattisgarhi", "Greek", "Chewa", "Deccan", "Akan", "Kazakh", 
+  "Min Dong Chinese", "Sylheti", "Zulu", "Czech", "Kinyarwanda", "Dhundhari", "Haitian Creole", 
+  "Min Bei Chinese", "Bemba", "Balochi", "Hebrew", "Swedish", "Finnish", "Norwegian", "Danish"
+];
+
+export const criminalRecordOptions = [
+  "Clean Record",
+  "Traffic Violations",
+  "Minor Infractions",
+  "Misdemeanor Convictions",
+  "Felony Convictions",
+  "Drug-Related Offenses",
+  "Property Crimes",
+  "Violent Crimes",
+  "White-Collar Crimes",
+  "Multiple Offenses"
+];

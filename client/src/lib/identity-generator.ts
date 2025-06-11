@@ -13,6 +13,8 @@ import {
   usStates,
   banks,
   creditCardTypes,
+  languages,
+  criminalRecordOptions,
   getRandomElement,
   getRandomNumber,
   getRandomBoolean
@@ -152,6 +154,7 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     sexualOrientation: getRandomElement(sexualOrientations),
     ethnicity: getRandomElement(ethnicities),
     nationality: country,
+    spokenLanguages: generateSpokenLanguages(),
     
     email: `${username}@${getRandomElement(["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "protonmail.com"])}`,
     phone: `+1 (${getRandomNumber(200, 999)}) ${getRandomNumber(100, 999)}-${getRandomNumber(1000, 9999)}`,
@@ -186,6 +189,12 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     githubUrl: `github.com/${username}`,
     onlyfansUrl: `onlyfans.com/${username}_premium`,
     datingUrl: `seekingarrangement.com/${username}`,
+    facebookUrl: `facebook.com/${username}`,
+    tiktokUrl: `tiktok.com/@${username}`,
+    youtubeUrl: `youtube.com/@${username}`,
+    discordUrl: `${username}#${getRandomNumber(1000, 9999)}`,
+    redditUrl: `reddit.com/u/${username}`,
+    snapchatUrl: `snapchat.com/add/${username}`,
     
     bloodType: getRandomElement(bloodTypes),
     medicalConditions: conditions,
@@ -203,6 +212,26 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     criminalRecord: hasCriminalRecord ? "Has Records" : "Clean Record",
     criminalHistory: hasCriminalRecord ? generateCriminalHistory() : null,
   };
+}
+
+function generateSpokenLanguages(): string {
+  const numLanguages = getRandomNumber(1, 4); // 1-4 languages
+  const selectedLanguages = [];
+  
+  // Always include English as most common
+  if (getRandomBoolean(0.85)) {
+    selectedLanguages.push("English");
+  }
+  
+  // Add additional languages
+  const availableLanguages = languages.filter(lang => !selectedLanguages.includes(lang));
+  for (let i = selectedLanguages.length; i < numLanguages && availableLanguages.length > 0; i++) {
+    const randomLang = getRandomElement(availableLanguages);
+    selectedLanguages.push(randomLang);
+    availableLanguages.splice(availableLanguages.indexOf(randomLang), 1);
+  }
+  
+  return selectedLanguages.join(", ");
 }
 
 function generateBodyMeasurements(): string {

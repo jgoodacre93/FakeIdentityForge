@@ -15,6 +15,7 @@ export const identityProfiles = pgTable("identity_profiles", {
   sexualOrientation: text("sexual_orientation").notNull(),
   ethnicity: text("ethnicity").notNull(),
   nationality: text("nationality").notNull(),
+  spokenLanguages: text("spoken_languages").notNull(),
   
   // Contact Information
   email: text("email").notNull(),
@@ -52,6 +53,12 @@ export const identityProfiles = pgTable("identity_profiles", {
   githubUrl: text("github_url").notNull(),
   onlyfansUrl: text("onlyfans_url").notNull(),
   datingUrl: text("dating_url").notNull(),
+  facebookUrl: text("facebook_url").notNull(),
+  tiktokUrl: text("tiktok_url").notNull(),
+  youtubeUrl: text("youtube_url").notNull(),
+  discordUrl: text("discord_url").notNull(),
+  redditUrl: text("reddit_url").notNull(),
+  snapchatUrl: text("snapchat_url").notNull(),
   
   // Health Information
   bloodType: text("blood_type").notNull(),
