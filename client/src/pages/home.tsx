@@ -118,11 +118,13 @@ export default function Home() {
           <div className="space-y-6">
             {/* Export Actions */}
             {currentProfile && (
-              <ExportActions 
-                profiles={currentProfiles}
-                currentProfile={currentProfile}
-              />
-              <DatabaseExport />
+              <>
+                <ExportActions 
+                  profiles={currentProfiles}
+                  currentProfile={currentProfile}
+                />
+                <DatabaseExport />
+              </>
             )}
 
             {/* Recent Profiles */}
