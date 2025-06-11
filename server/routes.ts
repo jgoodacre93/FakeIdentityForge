@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateProfilesSchema } from "@shared/schema";
 import { generateMultipleProfiles } from "../client/src/lib/identity-generator";
+import { generateProfilePhoto } from "./photo-generator";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Generate new identity profiles

@@ -75,6 +75,9 @@ export const identityProfiles = pgTable("identity_profiles", {
   profileType: text("profile_type").notNull(),
   riskLevel: text("risk_level").notNull(),
   
+  // Photo
+  photoUrl: text("photo_url"),
+  
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
