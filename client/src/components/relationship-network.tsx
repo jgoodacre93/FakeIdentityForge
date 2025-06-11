@@ -169,7 +169,7 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
 
   const getUniqueRelationshipTypes = () => {
     if (!networkData) return [];
-    const types = [...new Set(networkData.edges.map(edge => edge.type))];
+    const types = Array.from(new Set(networkData.edges.map(edge => edge.type)));
     return types.sort();
   };
 
@@ -276,11 +276,13 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
                 className="w-full h-[500px]"
               >
                 {/* Render edges first (behind nodes) */}
-                {networkData.edges.map((edge) => {
+                {getFilteredEdges().map((edge) => {
                   const sourceNode = networkData.nodes.find(n => n.id === edge.sourceId);
                   const targetNode = networkData.nodes.find(n => n.id === edge.targetId);
                   
                   if (!sourceNode || !targetNode) return null;
+                  
+                  const isHighlighted = isEdgeHighlighted(edge);
                   
                   return (
                     <line
@@ -291,7 +293,8 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
                       y2={targetNode.y}
                       stroke={getRelationshipColor(edge.type, edge.strength)}
                       strokeWidth={Math.max(edge.strength * 4, 1)}
-                      className="cursor-pointer hover:opacity-80 transition-opacity"
+                      opacity={isHighlighted ? 1 : 0.3}
+                      className="cursor-pointer hover:opacity-100 transition-all"
                       onClick={() => handleEdgeClick(edge)}
                     />
                   );
@@ -301,25 +304,31 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
                 {networkData.nodes.map((node) => {
                   const colorHex = getHexColor(node.profile.profileType);
                   const isSelected = selectedNode?.id === node.id;
+                  const isHighlighted = isNodeHighlighted(node);
+                  const isHovered = hoveredNode?.id === node.id;
                   
                   return (
                     <g key={node.id}>
                       <circle
                         cx={node.x}
                         cy={node.y}
-                        r={isSelected ? 25 : 20}
+                        r={isSelected ? 25 : isHovered ? 22 : 20}
                         fill={colorHex}
-                        stroke={isSelected ? "#000" : "#fff"}
+                        stroke={isSelected ? "#000" : isHighlighted || !hoveredNode ? "#fff" : "#ccc"}
                         strokeWidth={isSelected ? 3 : 2}
-                        className="cursor-pointer hover:opacity-80 transition-all"
+                        opacity={!hoveredNode || isHighlighted ? 1 : 0.4}
+                        className="cursor-pointer hover:opacity-100 transition-all"
                         onClick={() => handleNodeClick(node)}
+                        onMouseEnter={() => handleNodeHover(node)}
+                        onMouseLeave={() => handleNodeHover(null)}
                       />
                       <text
                         x={node.x}
                         y={node.y + 35}
                         textAnchor="middle"
-                        className="text-xs font-medium fill-gray-700"
+                        className="text-xs font-medium fill-gray-700 pointer-events-none"
                         style={{ fontSize: '11px' }}
+                        opacity={!hoveredNode || isHighlighted ? 1 : 0.4}
                       >
                         {node.profile.firstName}
                       </text>
@@ -327,32 +336,103 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
                         x={node.x}
                         y={node.y + 47}
                         textAnchor="middle"
-                        className="text-xs fill-gray-500"
+                        className="text-xs fill-gray-500 pointer-events-none"
                         style={{ fontSize: '9px' }}
+                        opacity={!hoveredNode || isHighlighted ? 1 : 0.4}
                       >
-                        {node.profile.age}y
+                        {node.profile.age}y • {node.profile.profileType.split(' ')[0]}
                       </text>
+                      
+                      {/* Connection indicators */}
+                      {isHovered && (
+                        <circle
+                          cx={node.x}
+                          cy={node.y}
+                          r={35}
+                          fill="none"
+                          stroke={colorHex}
+                          strokeWidth={2}
+                          strokeDasharray="5,5"
+                          opacity={0.6}
+                          className="pointer-events-none"
+                        />
+                      )}
                     </g>
                   );
                 })}
               </svg>
             </div>
 
-            {/* Network Statistics */}
-            <div className="grid grid-cols-3 gap-4 text-center">
+            {/* Network Statistics & AI Insights */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
               <div className="p-3 bg-blue-50 rounded-lg">
                 <div className="text-2xl font-bold text-blue-600">{networkData.nodes.length}</div>
                 <div className="text-sm text-blue-800">Profiles</div>
               </div>
               <div className="p-3 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">{networkData.edges.length}</div>
+                <div className="text-2xl font-bold text-green-600">{getFilteredEdges().length}</div>
                 <div className="text-sm text-green-800">Connections</div>
               </div>
               <div className="p-3 bg-purple-50 rounded-lg">
                 <div className="text-2xl font-bold text-purple-600">
-                  {Math.round((networkData.edges.reduce((sum, edge) => sum + edge.strength, 0) / networkData.edges.length) * 100)}%
+                  {networkData.edges.length > 0 ? Math.round((networkData.edges.reduce((sum, edge) => sum + edge.strength, 0) / networkData.edges.length) * 100) : 0}%
                 </div>
                 <div className="text-sm text-purple-800">Avg Strength</div>
+              </div>
+              <div className="p-3 bg-orange-50 rounded-lg">
+                <div className="text-2xl font-bold text-orange-600">
+                  {Math.round((networkData.edges.length / (networkData.nodes.length * (networkData.nodes.length - 1) / 2)) * 100)}%
+                </div>
+                <div className="text-sm text-orange-800">Network Density</div>
+              </div>
+            </div>
+
+            {/* AI Insights */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-3 flex items-center">
+                <Zap className="w-4 h-4 mr-2" />
+                AI Network Analysis
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="font-medium text-blue-800">Most Connected:</span>
+                  <div className="text-blue-700">
+                    {networkData.nodes
+                      .sort((a, b) => b.connections.length - a.connections.length)[0]
+                      ?.profile.fullName || 'N/A'} ({networkData.nodes
+                      .sort((a, b) => b.connections.length - a.connections.length)[0]
+                      ?.connections.length || 0} connections)
+                  </div>
+                </div>
+                <div>
+                  <span className="font-medium text-blue-800">Strongest Bond:</span>
+                  <div className="text-blue-700">
+                    {networkData.edges.length > 0 && (() => {
+                      const strongest = networkData.edges.sort((a, b) => b.strength - a.strength)[0];
+                      return `${strongest.type} (${Math.round(strongest.strength * 100)}%)`;
+                    })()}
+                  </div>
+                </div>
+                <div>
+                  <span className="font-medium text-blue-800">Common Relationship:</span>
+                  <div className="text-blue-700">
+                    {(() => {
+                      const typeCounts = networkData.edges.reduce((acc, edge) => {
+                        acc[edge.type] = (acc[edge.type] || 0) + 1;
+                        return acc;
+                      }, {} as Record<string, number>);
+                      const mostCommon = Object.entries(typeCounts).sort((a, b) => b[1] - a[1])[0];
+                      return mostCommon ? `${mostCommon[0]} (${mostCommon[1]} instances)` : 'N/A';
+                    })()}
+                  </div>
+                </div>
+                <div>
+                  <span className="font-medium text-blue-800">Network Complexity:</span>
+                  <div className="text-blue-700">
+                    {networkData.edges.length > networkData.nodes.length ? 'High' : 
+                     networkData.edges.length > networkData.nodes.length * 0.5 ? 'Medium' : 'Low'}
+                  </div>
+                </div>
               </div>
             </div>
 
