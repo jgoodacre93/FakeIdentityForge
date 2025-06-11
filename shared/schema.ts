@@ -63,6 +63,12 @@ export const identityProfiles = pgTable("identity_profiles", {
   routingNumber: text("routing_number").notNull(),
   creditScore: text("credit_score").notNull(),
   
+  // Credit Card Information
+  creditCardNumber: text("credit_card_number").notNull(),
+  creditCardType: text("credit_card_type").notNull(),
+  creditCardExpiry: text("credit_card_expiry").notNull(),
+  creditCardCvv: text("credit_card_cvv").notNull(),
+  
   // Criminal Records
   criminalRecord: text("criminal_record").notNull(),
   criminalHistory: text("criminal_history"),

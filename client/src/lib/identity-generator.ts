@@ -12,10 +12,71 @@ import {
   countries,
   usStates,
   banks,
+  creditCardTypes,
   getRandomElement,
   getRandomNumber,
   getRandomBoolean
 } from "./data-sets";
+
+function generateCreditCardNumber(cardType: { name: string; prefix: string; length: number }): string {
+  const { prefix, length } = cardType;
+  let cardNumber = prefix;
+  
+  // Generate remaining digits
+  while (cardNumber.length < length - 1) {
+    cardNumber += getRandomNumber(0, 9).toString();
+  }
+  
+  // Add check digit using Luhn algorithm
+  const checkDigit = calculateLuhnCheckDigit(cardNumber);
+  cardNumber += checkDigit;
+  
+  // Format with spaces for readability
+  return cardNumber.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function calculateLuhnCheckDigit(cardNumber: string): number {
+  let sum = 0;
+  let alternate = true;
+  
+  for (let i = cardNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cardNumber.charAt(i));
+    
+    if (alternate) {
+      digit *= 2;
+      if (digit > 9) {
+        digit = (digit % 10) + 1;
+      }
+    }
+    
+    sum += digit;
+    alternate = !alternate;
+  }
+  
+  return (10 - (sum % 10)) % 10;
+}
+
+function generateCreditCardExpiry(): string {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+  
+  // Generate expiry date 1-5 years in the future
+  const expiryYear = currentYear + getRandomNumber(1, 5);
+  const expiryMonth = getRandomNumber(1, 12);
+  
+  // If it's the same year, make sure month is in the future
+  const finalMonth = expiryYear === currentYear && expiryMonth <= currentMonth 
+    ? getRandomNumber(currentMonth + 1, 12) 
+    : expiryMonth;
+  
+  return `${finalMonth.toString().padStart(2, '0')}/${expiryYear.toString().slice(-2)}`;
+}
+
+function generateCreditCardCvv(cardType: { name: string; prefix: string; length: number }): string {
+  // American Express uses 4-digit CVV, others use 3-digit
+  const cvvLength = cardType.name === "American Express" ? 4 : 3;
+  return Array.from({ length: cvvLength }, () => getRandomNumber(0, 9)).join('');
+}
 
 export function generateIdentityProfile(): InsertIdentityProfile {
   const birthGender = getRandomElement(["Male", "Female"]);
@@ -50,6 +111,12 @@ export function generateIdentityProfile(): InsertIdentityProfile {
   
   const bank = getRandomElement(banks);
   const creditScores = ["Excellent (750-850)", "Good (700-749)", "Fair (650-699)", "Poor (300-649)"];
+  
+  // Credit card generation
+  const cardType = getRandomElement(creditCardTypes);
+  const creditCardNumber = generateCreditCardNumber(cardType);
+  const creditCardExpiry = generateCreditCardExpiry();
+  const creditCardCvv = generateCreditCardCvv(cardType);
   
   const hasCriminalRecord = getRandomBoolean(0.15); // 15% chance
   
@@ -127,6 +194,11 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     accountType: getRandomElement(["Checking", "Savings", "Checking & Savings"]),
     routingNumber: generateRoutingNumber(),
     creditScore: getRandomElement(creditScores),
+    
+    creditCardNumber,
+    creditCardType: cardType.name,
+    creditCardExpiry,
+    creditCardCvv,
     
     criminalRecord: hasCriminalRecord ? "Has Records" : "Clean Record",
     criminalHistory: hasCriminalRecord ? generateCriminalHistory() : null,

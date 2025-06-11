@@ -112,6 +112,15 @@ export const banks = [
   "SunTrust Bank", "BB&T Bank", "M&T Bank", "Huntington Bank", "Comerica Bank", "Zions Bank"
 ];
 
+export const creditCardTypes = [
+  { name: "Visa", prefix: "4", length: 16 },
+  { name: "Mastercard", prefix: "5", length: 16 },
+  { name: "American Express", prefix: "3", length: 15 },
+  { name: "Discover", prefix: "6", length: 16 },
+  { name: "Diners Club", prefix: "3", length: 14 },
+  { name: "JCB", prefix: "3", length: 16 }
+];
+
 // Utility functions
 export function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
