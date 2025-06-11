@@ -6,6 +6,8 @@ import { GenerationControls } from "@/components/generation-controls";
 import { IdentityProfileComponent } from "@/components/identity-profile";
 import { ExportActions } from "@/components/export-actions";
 import { LoadingOverlay } from "@/components/loading-overlay";
+import { ProfileLegend } from "@/components/profile-legend";
+import { getProfileTypeColor, getRiskLevelColor } from "@/lib/profile-colors";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, History, BarChart3 } from "lucide-react";
 
@@ -72,6 +74,9 @@ export default function Home() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Profile Classification Legend */}
+        <ProfileLegend />
+
         {/* Generation Controls */}
         <GenerationControls 
           onGenerate={handleGenerate}
@@ -116,21 +121,46 @@ export default function Home() {
               </h3>
               {recentProfiles.length > 0 ? (
                 <div className="space-y-3">
-                  {recentProfiles.slice(0, 5).map((profile) => (
-                    <div
-                      key={profile.id}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
-                      onClick={() => handleSelectProfile(profile)}
-                    >
-                      <div>
-                        <p className="font-medium text-gray-900">{profile.fullName}</p>
-                        <p className="text-sm text-gray-500">
-                          {new Date(profile.createdAt).toLocaleString()}
-                        </p>
+                  {recentProfiles.slice(0, 5).map((profile) => {
+                    const profileTypeColors = getProfileTypeColor(profile.profileType);
+                    const riskColors = getRiskLevelColor(profile.riskLevel);
+                    
+                    return (
+                      <div
+                        key={profile.id}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                        onClick={() => handleSelectProfile(profile)}
+                      >
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-medium text-gray-900">{profile.fullName}</p>
+                            <div className="flex gap-1">
+                              <div 
+                                className={`w-2 h-2 rounded-full ${profileTypeColors.icon.replace('text-', 'bg-')}`}
+                                title={profile.profileType}
+                              ></div>
+                              <div 
+                                className={`w-2 h-2 rounded-full ${riskColors.dot}`}
+                                title={`${profile.riskLevel} Risk`}
+                              ></div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <p className="text-xs text-gray-500">
+                              {new Date(profile.createdAt).toLocaleDateString()}
+                            </p>
+                            <span className={`px-2 py-0.5 text-xs rounded-full ${profileTypeColors.bg} ${profileTypeColors.text}`}>
+                              {profile.profileType.split(' ')[0]}
+                            </span>
+                            <span className={`px-2 py-0.5 text-xs rounded-full ${riskColors.bg} ${riskColors.text}`}>
+                              {profile.riskLevel}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-gray-400">→</div>
                       </div>
-                      <div className="text-gray-400">→</div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <p className="text-gray-500 text-sm">No profiles generated yet</p>
