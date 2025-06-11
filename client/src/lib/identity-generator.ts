@@ -372,8 +372,8 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     criminalRecord,
     criminalHistory,
     
-    profileType,
-    riskLevel,
+    profileType: profileClassification,
+    riskLevel: riskClassification,
   };
 }
 

@@ -3,6 +3,7 @@ import type { IdentityProfile } from "@shared/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { getProfileTypeColor, getRiskLevelColor } from "@/lib/profile-colors";
 import { 
   User, 
   Contact, 
@@ -22,7 +23,10 @@ import {
   Heart,
   Shield,
   CreditCard,
-  Activity
+  Activity,
+  AlertTriangle,
+  CheckCircle,
+  UserCheck
 } from "lucide-react";
 
 interface IdentityProfileProps {
@@ -97,6 +101,25 @@ export function IdentityProfileComponent({
         <Collapsible open={openSections.has("basic")}>
           <CollapsibleContent>
             <CardContent className="pt-0">
+              {/* Profile Type and Risk Level Indicators */}
+              <div className="flex flex-wrap gap-3 mb-6 p-4 bg-gray-50 rounded-lg">
+                <div className={`flex items-center px-3 py-2 rounded-full border ${getProfileTypeColor(profile.profileType).bg} ${getProfileTypeColor(profile.profileType).border}`}>
+                  <UserCheck className={`w-4 h-4 mr-2 ${getProfileTypeColor(profile.profileType).icon}`} />
+                  <span className={`text-sm font-medium ${getProfileTypeColor(profile.profileType).text}`}>
+                    {profile.profileType}
+                  </span>
+                </div>
+                
+                <div className={`flex items-center px-3 py-2 rounded-full border ${getRiskLevelColor(profile.riskLevel).bg} ${getRiskLevelColor(profile.riskLevel).border}`}>
+                  <div className={`w-2 h-2 rounded-full mr-2 ${getRiskLevelColor(profile.riskLevel).dot}`}></div>
+                  <span className={`text-sm font-medium ${getRiskLevelColor(profile.riskLevel).text}`}>
+                    {profile.riskLevel} Risk
+                  </span>
+                  {profile.riskLevel === "High" && <AlertTriangle className="w-4 h-4 ml-1 text-red-500" />}
+                  {profile.riskLevel === "Low" && <CheckCircle className="w-4 h-4 ml-1 text-green-500" />}
+                </div>
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Full Name</label>

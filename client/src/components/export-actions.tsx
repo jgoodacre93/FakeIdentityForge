@@ -54,7 +54,8 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
         'Height', 'Weight', 'Hair Color', 'Eye Color', 'Job Title', 'Company', 'Industry',
         'Annual Income', 'Marital Status', 'Spouse Name', 'Social Media Profiles', 'Adult Site Profiles',
         'Blood Type', 'Medical Conditions', 'Bank Name', 'Account Type', 'Credit Score', 
-        'Credit Card Type', 'Credit Card Number', 'Credit Card Expiry', 'Credit Card CVV', 'Criminal Record'
+        'Credit Card Type', 'Credit Card Number', 'Credit Card Expiry', 'Credit Card CVV', 
+        'Profile Type', 'Risk Level', 'Criminal Record'
       ];
       
       const csvContent = [
@@ -96,6 +97,8 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
           `"${profile.creditCardNumber}"`,
           `"${profile.creditCardExpiry}"`,
           `"${profile.creditCardCvv}"`,
+          `"${profile.profileType}"`,
+          `"${profile.riskLevel}"`,
           `"${profile.criminalRecord}"`
         ].join(','))
       ].join('\n');
@@ -186,6 +189,10 @@ Card Type: ${profile.creditCardType}
 Card Number: ${profile.creditCardNumber}
 Expiry Date: ${profile.creditCardExpiry}
 CVV: ${profile.creditCardCvv}
+
+PROFILE CLASSIFICATION
+Profile Type: ${profile.profileType}
+Risk Level: ${profile.riskLevel}
 
 CRIMINAL RECORDS
 Status: ${profile.criminalRecord}${profile.criminalHistory ? `\nHistory: ${profile.criminalHistory}` : ''}
