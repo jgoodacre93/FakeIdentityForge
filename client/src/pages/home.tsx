@@ -11,6 +11,7 @@ import { RelationshipNetwork } from "@/components/relationship-network";
 import { getProfileTypeColor, getRiskLevelColor } from "@/lib/profile-colors";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, History, BarChart3 } from "lucide-react";
+import { DatabaseExport } from "@/components/database-export";
 
 export default function Home() {
   const [currentProfiles, setCurrentProfiles] = useState<IdentityProfile[]>([]);
@@ -121,6 +122,8 @@ export default function Home() {
                 profiles={currentProfiles}
                 currentProfile={currentProfile}
               />
+
+            <DatabaseExport />
             )}
 
             {/* Recent Profiles */}
@@ -134,7 +137,7 @@ export default function Home() {
                   {recentProfiles.slice(0, 5).map((profile) => {
                     const profileTypeColors = getProfileTypeColor(profile.profileType);
                     const riskColors = getRiskLevelColor(profile.riskLevel);
-                    
+
                     return (
                       <div
                         key={profile.id}

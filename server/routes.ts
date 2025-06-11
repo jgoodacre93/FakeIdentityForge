@@ -60,6 +60,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Export entire database
+  app.get("/api/database/export", async (req, res) => {
+    try {
+      const allProfiles = await storage.getAllProfiles();
+      
+      const exportData = {
+        exportDate: new Date().toISOString(),
+        totalProfiles: allProfiles.length,
+        profiles: allProfiles
+      };
+      
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', `attachment; filename="identity_database_export_${new Date().toISOString().split('T')[0]}.json"`);
+      res.json(exportData);
+    } catch (error) {
+      console.error("Error exporting database:", error);
+      res.status(500).json({ message: "Failed to export database" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

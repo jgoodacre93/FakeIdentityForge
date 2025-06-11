@@ -10,6 +10,7 @@ export interface IStorage {
   getIdentityProfile(id: number): Promise<IdentityProfile | undefined>;
   createIdentityProfile(profile: InsertIdentityProfile): Promise<IdentityProfile>;
   getRecentProfiles(limit: number): Promise<IdentityProfile[]>;
+  getAllProfiles(): Promise<IdentityProfile[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -32,6 +33,14 @@ export class DatabaseStorage implements IStorage {
       .from(identityProfiles)
       .orderBy(desc(identityProfiles.createdAt))
       .limit(limit);
+    return profiles;
+  }
+
+  async getAllProfiles(): Promise<IdentityProfile[]> {
+    const profiles = await db
+      .select()
+      .from(identityProfiles)
+      .orderBy(desc(identityProfiles.createdAt));
     return profiles;
   }
 }
