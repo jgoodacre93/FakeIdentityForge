@@ -15,6 +15,8 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
   const [networkData, setNetworkData] = useState<{ nodes: NetworkNode[], edges: Relationship[] } | null>(null);
   const [selectedNode, setSelectedNode] = useState<NetworkNode | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<Relationship | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<NetworkNode | null>(null);
+  const [relationshipFilter, setRelationshipFilter] = useState<string>("all");
   const [isGenerating, setIsGenerating] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -41,9 +43,82 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     const generator = new RelationshipNetworkGenerator(profiles);
-    const network = generator.generateNetwork();
+    let network = generator.generateNetwork();
+    
+    // Apply force-directed layout positioning
+    network = applyForceLayout(network);
+    
     setNetworkData(network);
     setIsGenerating(false);
+  };
+
+  const applyForceLayout = (network: { nodes: NetworkNode[], edges: Relationship[] }) => {
+    const { nodes, edges } = network;
+    const centerX = 300;
+    const centerY = 250;
+    const radius = 180;
+
+    // Initial circular positioning
+    nodes.forEach((node, index) => {
+      const angle = (index * 2 * Math.PI) / nodes.length;
+      node.x = centerX + Math.cos(angle) * radius;
+      node.y = centerY + Math.sin(angle) * radius;
+    });
+
+    // Apply force simulation (simplified)
+    for (let iteration = 0; iteration < 100; iteration++) {
+      // Repulsion between nodes
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[j].x - nodes[i].x;
+          const dy = nodes[j].y - nodes[i].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 80) {
+            const force = 0.5;
+            const fx = (dx / distance) * force;
+            const fy = (dy / distance) * force;
+            
+            nodes[i].x -= fx;
+            nodes[i].y -= fy;
+            nodes[j].x += fx;
+            nodes[j].y += fy;
+          }
+        }
+      }
+
+      // Attraction for connected nodes
+      edges.forEach(edge => {
+        const source = nodes.find(n => n.id === edge.sourceId);
+        const target = nodes.find(n => n.id === edge.targetId);
+        
+        if (source && target) {
+          const dx = target.x - source.x;
+          const dy = target.y - source.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const idealDistance = 120 - (edge.strength * 40);
+          
+          if (distance > idealDistance) {
+            const force = 0.1 * edge.strength;
+            const fx = (dx / distance) * force;
+            const fy = (dy / distance) * force;
+            
+            source.x += fx;
+            source.y += fy;
+            target.x -= fx;
+            target.y -= fy;
+          }
+        }
+      });
+
+      // Keep nodes within bounds
+      nodes.forEach(node => {
+        node.x = Math.max(50, Math.min(550, node.x));
+        node.y = Math.max(50, Math.min(450, node.y));
+      });
+    }
+
+    return { nodes, edges };
   };
 
   useEffect(() => {
@@ -80,6 +155,40 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
   const handleEdgeClick = (edge: Relationship) => {
     setSelectedEdge(edge);
     setSelectedNode(null);
+  };
+
+  const handleNodeHover = (node: NetworkNode | null) => {
+    setHoveredNode(node);
+  };
+
+  const getFilteredEdges = () => {
+    if (!networkData) return [];
+    if (relationshipFilter === "all") return networkData.edges;
+    return networkData.edges.filter(edge => edge.type === relationshipFilter);
+  };
+
+  const getUniqueRelationshipTypes = () => {
+    if (!networkData) return [];
+    const types = [...new Set(networkData.edges.map(edge => edge.type))];
+    return types.sort();
+  };
+
+  const isNodeHighlighted = (node: NetworkNode) => {
+    if (!hoveredNode) return false;
+    if (hoveredNode.id === node.id) return true;
+    
+    // Highlight connected nodes
+    const connectedIds = networkData?.edges
+      .filter(edge => edge.sourceId === hoveredNode.id || edge.targetId === hoveredNode.id)
+      .map(edge => edge.sourceId === hoveredNode.id ? edge.targetId : edge.sourceId) || [];
+    
+    return connectedIds.includes(node.id);
+  };
+
+  const isEdgeHighlighted = (edge: Relationship) => {
+    if (!hoveredNode) return relationshipFilter === "all" || edge.type === relationshipFilter;
+    return (edge.sourceId === hoveredNode.id || edge.targetId === hoveredNode.id) &&
+           (relationshipFilter === "all" || edge.type === relationshipFilter);
   };
 
   if (profiles.length < 2) {
@@ -137,6 +246,26 @@ export function RelationshipNetwork({ profiles }: RelationshipNetworkProps) {
           </div>
         ) : networkData ? (
           <div className="space-y-4">
+            {/* Relationship Filter */}
+            <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+              <span className="text-sm font-medium text-gray-700">Filter by relationship:</span>
+              <select
+                value={relationshipFilter}
+                onChange={(e) => setRelationshipFilter(e.target.value)}
+                className="text-sm border border-gray-300 rounded px-3 py-1 bg-white"
+              >
+                <option value="all">All Relationships</option>
+                {getUniqueRelationshipTypes().map(type => (
+                  <option key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1).replace('_', ' ')}
+                  </option>
+                ))}
+              </select>
+              <span className="text-xs text-gray-500">
+                Showing {getFilteredEdges().length} of {networkData.edges.length} connections
+              </span>
+            </div>
+
             {/* Network Visualization */}
             <div className="border rounded-lg bg-gray-50 relative overflow-hidden">
               <svg

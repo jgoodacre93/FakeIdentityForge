@@ -84,6 +84,15 @@ export default function Home() {
           isLoading={generateMutation.isPending}
         />
 
+        {/* Relationship Network */}
+        {(currentProfiles.length > 1 || recentProfiles.length > 1) && (
+          <div className="mb-8">
+            <RelationshipNetwork 
+              profiles={currentProfiles.length > 1 ? currentProfiles : recentProfiles.slice(0, 10)} 
+            />
+          </div>
+        )}
+
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Display */}
