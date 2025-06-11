@@ -88,22 +88,38 @@ export function IdentityProfileComponent({
         </div>
       )}
 
-      {/* Basic Information */}
+      {/* Profile Photo & Header */}
       <Card>
-        <CardHeader className="cursor-pointer" onClick={() => toggleSection("basic")}>
-          <CardTitle className="flex items-center justify-between">
-            <span className="flex items-center">
-              <User className="mr-2 text-blue-600" />
-              Basic Information
-            </span>
-            {openSections.has("basic") ? <ChevronUp className="text-gray-400" /> : <ChevronDown className="text-gray-400" />}
-          </CardTitle>
-        </CardHeader>
-        <Collapsible open={openSections.has("basic")}>
-          <CollapsibleContent>
-            <CardContent className="pt-0">
+        <CardContent className="pt-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            {/* Profile Photo */}
+            <div className="flex-shrink-0">
+              {profile.photoUrl ? (
+                <div className="w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-200 shadow-lg">
+                  <img 
+                    src={profile.photoUrl} 
+                    alt={`Profile photo of ${profile.fullName}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="w-32 h-32 rounded-lg bg-gray-100 border-2 border-gray-200 flex items-center justify-center">
+                  <User className="w-16 h-16 text-gray-400" />
+                </div>
+              )}
+            </div>
+            
+            {/* Profile Header Info */}
+            <div className="flex-1 text-center sm:text-left">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">{profile.fullName}</h1>
+              <p className="text-lg text-gray-600 mb-4">{profile.age} years old • {profile.jobTitle}</p>
+              
               {/* Profile Type and Risk Level Indicators */}
-              <div className="flex flex-wrap gap-3 mb-6 p-4 bg-gray-50 rounded-lg">
+              <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
                 <div className={`flex items-center px-3 py-2 rounded-full border ${getProfileTypeColor(profile.profileType).bg} ${getProfileTypeColor(profile.profileType).border}`}>
                   <UserCheck className={`w-4 h-4 mr-2 ${getProfileTypeColor(profile.profileType).icon}`} />
                   <span className={`text-sm font-medium ${getProfileTypeColor(profile.profileType).text}`}>
@@ -120,7 +136,25 @@ export function IdentityProfileComponent({
                   {profile.riskLevel === "Low" && <CheckCircle className="w-4 h-4 ml-1 text-green-500" />}
                 </div>
               </div>
-              
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Basic Information */}
+      <Card>
+        <CardHeader className="cursor-pointer" onClick={() => toggleSection("basic")}>
+          <CardTitle className="flex items-center justify-between">
+            <span className="flex items-center">
+              <User className="mr-2 text-blue-600" />
+              Basic Information
+            </span>
+            {openSections.has("basic") ? <ChevronUp className="text-gray-400" /> : <ChevronDown className="text-gray-400" />}
+          </CardTitle>
+        </CardHeader>
+        <Collapsible open={openSections.has("basic")}>
+          <CollapsibleContent>
+            <CardContent className="pt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Full Name</label>
