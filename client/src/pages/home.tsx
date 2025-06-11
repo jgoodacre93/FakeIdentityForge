@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import type { IdentityProfile } from "@shared/schema";
-import { GenerationControls } from "@/components/generation-controls";
+import { GenerationForm, GenerationOptions } from "@/components/generation-form";
 import { IdentityProfileComponent } from "@/components/identity-profile";
 import { ExportActions } from "@/components/export-actions";
 import { LoadingOverlay } from "@/components/loading-overlay";
@@ -21,8 +21,8 @@ export default function Home() {
 
   // Generate profiles mutation
   const generateMutation = useMutation({
-    mutationFn: async (count: number) => {
-      const res = await apiRequest("POST", "/api/profiles/generate", { count });
+    mutationFn: async ({ count, options }: { count: number; options?: GenerationOptions }) => {
+      const res = await apiRequest("POST", "/api/profiles/generate", { count, options });
       return res.json();
     },
     onSuccess: (data: IdentityProfile[]) => {
@@ -43,8 +43,8 @@ export default function Home() {
     },
   });
 
-  const handleGenerate = (count: number) => {
-    generateMutation.mutate(count);
+  const handleGenerate = (count: number, options?: GenerationOptions) => {
+    generateMutation.mutate({ count, options });
   };
 
   const handleSelectProfile = (profile: IdentityProfile) => {
@@ -73,7 +73,7 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Generation Controls */}
-        <GenerationControls 
+        <GenerationForm 
           onGenerate={handleGenerate}
           isLoading={generateMutation.isPending}
         />

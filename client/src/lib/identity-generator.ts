@@ -80,7 +80,7 @@ function generateCreditCardCvv(cardType: { name: string; prefix: string; length:
   return Array.from({ length: cvvLength }, () => getRandomNumber(0, 9)).join('');
 }
 
-export function generateIdentityProfile(): InsertIdentityProfile {
+export function generateIdentityProfile(options?: { criminalRecordType?: string }): InsertIdentityProfile {
   const birthGender = getRandomElement(["Male", "Female"]);
   const genderData = getRandomElement(genderIdentities);
   const firstName = getRandomElement(firstNames);
@@ -120,7 +120,17 @@ export function generateIdentityProfile(): InsertIdentityProfile {
   const creditCardExpiry = generateCreditCardExpiry();
   const creditCardCvv = generateCreditCardCvv(cardType);
   
-  const hasCriminalRecord = getRandomBoolean(0.15); // 15% chance
+  // Handle criminal record based on options
+  let criminalRecordType: string;
+  let hasCriminalRecord: boolean;
+  
+  if (options?.criminalRecordType) {
+    criminalRecordType = options.criminalRecordType;
+    hasCriminalRecord = criminalRecordType !== "Clean Record";
+  } else {
+    hasCriminalRecord = getRandomBoolean(0.15); // 15% chance
+    criminalRecordType = hasCriminalRecord ? getRandomElement(criminalRecordOptions.filter(option => option !== "Clean Record")) : "Clean Record";
+  }
   
   const heights = [
     "5'2\" (157 cm)", "5'3\" (160 cm)", "5'4\" (163 cm)", "5'5\" (165 cm)",
@@ -209,14 +219,14 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     creditCardExpiry,
     creditCardCvv,
     
-    criminalRecord: hasCriminalRecord ? "Has Records" : "Clean Record",
+    criminalRecord: criminalRecordType,
     criminalHistory: hasCriminalRecord ? generateCriminalHistory() : null,
   };
 }
 
 function generateSpokenLanguages(): string {
   const numLanguages = getRandomNumber(1, 4); // 1-4 languages
-  const selectedLanguages = [];
+  const selectedLanguages: string[] = [];
   
   // Always include English as most common
   if (getRandomBoolean(0.85)) {
@@ -322,6 +332,6 @@ function generateCriminalHistory(): string {
   return selectedOffenses.join(", ");
 }
 
-export function generateMultipleProfiles(count: number): InsertIdentityProfile[] {
-  return Array.from({ length: count }, () => generateIdentityProfile());
+export function generateMultipleProfiles(count: number, options?: { criminalRecordType?: string }): InsertIdentityProfile[] {
+  return Array.from({ length: count }, () => generateIdentityProfile(options));
 }

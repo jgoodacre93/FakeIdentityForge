@@ -94,6 +94,9 @@ export type IdentityProfile = typeof identityProfiles.$inferSelect;
 // Generation request schema
 export const generateProfilesSchema = z.object({
   count: z.number().int().min(1).max(50).default(1),
+  options: z.object({
+    criminalRecordType: z.string().optional(),
+  }).optional(),
 });
 
 export type GenerateProfilesRequest = z.infer<typeof generateProfilesSchema>;
