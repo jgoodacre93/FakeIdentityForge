@@ -71,6 +71,10 @@ export const identityProfiles = pgTable("identity_profiles", {
   criminalRecord: text("criminal_record").notNull(),
   criminalHistory: text("criminal_history"),
   
+  // Profile Classification
+  profileType: text("profile_type").notNull(),
+  riskLevel: text("risk_level").notNull(),
+  
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

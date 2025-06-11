@@ -166,6 +166,81 @@ function generateAdultSiteProfiles(firstName: string, genderIdentity: string): s
   return profiles.join('\n');
 }
 
+function determineProfileType(age: number, industry: string, criminalRecord: string, adultSiteProfiles: string): string {
+  // Young professional
+  if (age >= 22 && age <= 35 && ["Technology", "Finance", "Consulting"].includes(industry)) {
+    return "Young Professional";
+  }
+  
+  // Adult content creator
+  if (adultSiteProfiles.includes("OnlyFans") || adultSiteProfiles.includes("subscribers")) {
+    return "Adult Content Creator";
+  }
+  
+  // High-risk individual
+  if (criminalRecord === "Has Records") {
+    return "High-Risk Individual";
+  }
+  
+  // Senior executive
+  if (age >= 40 && ["Finance", "Technology", "Consulting"].includes(industry)) {
+    return "Senior Executive";
+  }
+  
+  // Creative professional
+  if (["Media", "Technology"].includes(industry) && age >= 25 && age <= 45) {
+    return "Creative Professional";
+  }
+  
+  // Student/young adult
+  if (age >= 18 && age <= 25) {
+    return "Student/Young Adult";
+  }
+  
+  // Senior citizen
+  if (age >= 65) {
+    return "Senior Citizen";
+  }
+  
+  // Default
+  return "General Population";
+}
+
+function determineRiskLevel(criminalRecord: string, creditScore: string, age: number, profileType: string): string {
+  let riskPoints = 0;
+  
+  // Criminal history adds significant risk
+  if (criminalRecord === "Has Records") {
+    riskPoints += 3;
+  }
+  
+  // Poor credit adds risk
+  if (creditScore.includes("Poor")) {
+    riskPoints += 2;
+  } else if (creditScore.includes("Fair")) {
+    riskPoints += 1;
+  }
+  
+  // Very young or very old adds minor risk
+  if (age < 21 || age > 70) {
+    riskPoints += 1;
+  }
+  
+  // Adult content creators have elevated risk
+  if (profileType === "Adult Content Creator") {
+    riskPoints += 1;
+  }
+  
+  // Determine final risk level
+  if (riskPoints >= 4) {
+    return "High";
+  } else if (riskPoints >= 2) {
+    return "Medium";
+  } else {
+    return "Low";
+  }
+}
+
 export function generateIdentityProfile(): InsertIdentityProfile {
   const birthGender = getRandomElement(["Male", "Female"]);
   const genderData = getRandomElement(genderIdentities);
@@ -207,6 +282,16 @@ export function generateIdentityProfile(): InsertIdentityProfile {
   const creditCardCvv = generateCreditCardCvv(cardType);
   
   const hasCriminalRecord = getRandomBoolean(0.15); // 15% chance
+  const criminalRecord = hasCriminalRecord ? "Has Records" : "Clean Record";
+  const criminalHistory = hasCriminalRecord ? generateCriminalHistory() : null;
+  const creditScore = getRandomElement(creditScores);
+  
+  const socialMediaProfiles = generateSocialMediaProfiles(firstName, lastName);
+  const adultSiteProfiles = generateAdultSiteProfiles(firstName, genderData.identity);
+  
+  // Calculate profile classification
+  const profileClassification = determineProfileType(age, industry, criminalRecord, adultSiteProfiles);
+  const riskClassification = determineRiskLevel(criminalRecord, creditScore, age, profileClassification);
   
   const heights = [
     "5'2\" (157 cm)", "5'3\" (160 cm)", "5'4\" (163 cm)", "5'5\" (165 cm)",
@@ -268,8 +353,8 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     maritalStatus,
     spouseName,
     
-    socialMediaProfiles: generateSocialMediaProfiles(firstName, lastName),
-    adultSiteProfiles: generateAdultSiteProfiles(firstName, genderData.identity),
+    socialMediaProfiles,
+    adultSiteProfiles,
     
     bloodType: getRandomElement(bloodTypes),
     medicalConditions: conditions,
@@ -277,15 +362,18 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     bankName: bank,
     accountType: getRandomElement(["Checking", "Savings", "Checking & Savings"]),
     routingNumber: generateRoutingNumber(),
-    creditScore: getRandomElement(creditScores),
+    creditScore,
     
     creditCardNumber,
     creditCardType: cardType.name,
     creditCardExpiry,
     creditCardCvv,
     
-    criminalRecord: hasCriminalRecord ? "Has Records" : "Clean Record",
-    criminalHistory: hasCriminalRecord ? generateCriminalHistory() : null,
+    criminalRecord,
+    criminalHistory,
+    
+    profileType,
+    riskLevel,
   };
 }
 
