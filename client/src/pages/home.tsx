@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import type { IdentityProfile } from "@shared/schema";
 import { GenerationControls } from "@/components/generation-controls";
-import { IdentityProfileComponent } from "@/components/identity-profile-fixed";
+import { IdentityProfileComponent } from "@/components/identity-profile";
 import { ExportActions } from "@/components/export-actions";
 import { LoadingOverlay } from "@/components/loading-overlay";
 import { ProfileLegend } from "@/components/profile-legend";
