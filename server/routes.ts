@@ -14,10 +14,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Generate profiles using the client-side generator
       const generatedProfiles = generateMultipleProfiles(count);
       
-      // Store all generated profiles
+      // Store all generated profiles and generate photos
       const storedProfiles = [];
       for (const profile of generatedProfiles) {
         const stored = await storage.createIdentityProfile(profile);
+        
+        // Generate photo for the profile
+        try {
+          console.log(`Generating photo for ${stored.fullName}...`);
+          const photoUrl = await generateProfilePhoto(stored);
+          if (photoUrl) {
+            // Update the profile with the photo URL
+            await storage.updateProfilePhoto(stored.id, photoUrl);
+            stored.photoUrl = photoUrl;
+          }
+        } catch (error) {
+          console.error(`Failed to generate photo for ${stored.fullName}:`, error);
+        }
+        
         storedProfiles.push(stored);
       }
       

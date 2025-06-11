@@ -17,9 +17,16 @@ export async function generateProfilePhoto(profile: IdentityProfile): Promise<st
       style: "natural"
     });
 
-    return response.data && response.data[0] ? response.data[0].url : null;
+    if (response.data && response.data.length > 0 && response.data[0].url) {
+      return response.data[0].url;
+    }
+    return null;
   } catch (error) {
-    console.error("Error generating profile photo:", error);
+    if (error instanceof Error && error.message.includes('429')) {
+      console.log(`Rate limit reached for photo generation. Skipping photo for ${profile.fullName}`);
+    } else {
+      console.error("Error generating profile photo:", error);
+    }
     return null;
   }
 }
