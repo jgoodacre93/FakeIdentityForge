@@ -121,6 +121,35 @@ export const creditCardTypes = [
   { name: "JCB", prefix: "3", length: 16 }
 ];
 
+export const socialMediaPlatforms = [
+  "Facebook", "Instagram", "Twitter/X", "TikTok", "Snapchat", "LinkedIn", "YouTube", "Pinterest",
+  "Reddit", "Discord", "Telegram", "WhatsApp", "WeChat", "Threads", "Mastodon", "Bluesky",
+  "Tumblr", "Twitch", "Steam", "Spotify", "SoundCloud", "Bandcamp", "Last.fm", "Goodreads",
+  "Letterboxd", "VSCO", "BeReal", "Clubhouse", "Signal", "Viber", "Line", "KakaoTalk"
+];
+
+export const adultPlatforms = [
+  "OnlyFans", "Fansly", "ManyVids", "Chaturbate", "MyFreeCams", "Cam4", "LiveJasmin", "Stripchat",
+  "CamSoda", "BongaCams", "Flirt4Free", "ImLive", "Streamate", "JerkMate", "AdultWork", "SkyPrivate",
+  "ModelCentro", "AVN Stars", "PornHub", "XVideos", "Brazzers", "Reality Kings", "Bang Bros",
+  "Naughty America", "Digital Playground", "Private", "Evil Angel", "Vivid", "Wicked Pictures"
+];
+
+export const socialMediaUsernames = [
+  "aesthetic_vibes", "midnight_dreamer", "cosmic_wanderer", "neon_nights", "urban_explorer",
+  "digital_nomad", "creative_soul", "minimalist_life", "vintage_lover", "coffee_addict",
+  "bookworm_adventures", "fitness_journey", "foodie_paradise", "travel_tales", "music_maven",
+  "art_enthusiast", "tech_geek", "nature_lover", "fashion_forward", "gaming_legend",
+  "photo_captures", "sunset_chaser", "ocean_waves", "mountain_peaks", "city_lights"
+];
+
+export const adultUsernames = [
+  "seductive_siren", "midnight_temptation", "velvet_dreams", "scarlet_passion", "diamond_desire",
+  "ruby_romance", "golden_goddess", "platinum_princess", "crystal_charm", "emerald_enchantment",
+  "sapphire_seduction", "pearl_perfection", "jade_jewel", "amber_allure", "onyx_obsession",
+  "rose_red_lips", "violet_vixen", "cherry_blossom", "honey_sweet", "sugar_spice"
+];
+
 // Utility functions
 export function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];

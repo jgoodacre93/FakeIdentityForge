@@ -45,13 +45,11 @@ export const identityProfiles = pgTable("identity_profiles", {
   maritalStatus: text("marital_status").notNull(),
   spouseName: text("spouse_name"),
   
-  // Online Presence
-  linkedinUrl: text("linkedin_url").notNull(),
-  twitterUrl: text("twitter_url").notNull(),
-  instagramUrl: text("instagram_url").notNull(),
-  githubUrl: text("github_url").notNull(),
-  onlyfansUrl: text("onlyfans_url").notNull(),
-  datingUrl: text("dating_url").notNull(),
+  // Social Media Profiles
+  socialMediaProfiles: text("social_media_profiles").notNull(),
+  
+  // Adult Site Profiles
+  adultSiteProfiles: text("adult_site_profiles").notNull(),
   
   // Health Information
   bloodType: text("blood_type").notNull(),

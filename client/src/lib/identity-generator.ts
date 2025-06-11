@@ -13,6 +13,10 @@ import {
   usStates,
   banks,
   creditCardTypes,
+  socialMediaPlatforms,
+  adultPlatforms,
+  socialMediaUsernames,
+  adultUsernames,
   getRandomElement,
   getRandomNumber,
   getRandomBoolean
