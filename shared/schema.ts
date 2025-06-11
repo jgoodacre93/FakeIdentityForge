@@ -21,7 +21,7 @@ export const identityProfiles = pgTable("identity_profiles", {
   phone: text("phone").notNull(),
   address: text("address").notNull(),
   city: text("city").notNull(),
-  state: text("state").$type<string | null>(),
+  state: text("state"),
   zipCode: text("zip_code").notNull(),
   country: text("country").notNull(),
   citizenshipStatus: text("citizenship_status").notNull(),

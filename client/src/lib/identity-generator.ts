@@ -30,7 +30,7 @@ export function generateIdentityProfile(): InsertIdentityProfile {
   
   const country = getRandomElement(countries);
   const isUS = country === "United States";
-  const state = isUS ? getRandomElement(usStates) : null;
+  const state: string | null = isUS ? getRandomElement(usStates) : null;
   const city = getRandomElement(cities);
   
   const company = getRandomElement(companies);
@@ -129,7 +129,7 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     creditScore: getRandomElement(creditScores),
     
     criminalRecord: hasCriminalRecord ? "Has Records" : "Clean Record",
-    criminalHistory: hasCriminalRecord ? generateCriminalHistory() : null,
+    criminalHistory: hasCriminalRecord ? generateCriminalHistory() : undefined,
   };
 }
 
