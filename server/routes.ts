@@ -8,10 +8,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Generate new identity profiles
   app.post("/api/profiles/generate", async (req, res) => {
     try {
-      const { count, options } = generateProfilesSchema.parse(req.body);
+      const { count } = generateProfilesSchema.parse(req.body);
       
       // Generate profiles using the client-side generator
-      const generatedProfiles = generateMultipleProfiles(count, options);
+      const generatedProfiles = generateMultipleProfiles(count);
       
       // Store all generated profiles
       const storedProfiles = [];

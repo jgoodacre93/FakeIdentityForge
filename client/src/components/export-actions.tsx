@@ -50,12 +50,11 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
     try {
       const headers = [
         'Full Name', 'Age', 'Birth Gender', 'Gender Identity', 'Pronouns', 'Sexual Orientation', 'Ethnicity',
-        'Spoken Languages', 'Email', 'Phone', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Citizenship Status',
+        'Email', 'Phone', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Citizenship Status',
         'Height', 'Weight', 'Hair Color', 'Eye Color', 'Job Title', 'Company', 'Industry',
-        'Annual Income', 'Marital Status', 'Spouse Name', 'LinkedIn', 'Twitter', 'Instagram', 'GitHub',
-        'Facebook', 'TikTok', 'YouTube', 'Discord', 'Reddit', 'Snapchat', 'OnlyFans', 'Dating Profile',
-        'Blood Type', 'Medical Conditions', 'Bank Name', 'Account Type', 'Credit Score', 
-        'Credit Card Type', 'Credit Card Number', 'Credit Card Expiry', 'Credit Card CVV', 'Criminal Record'
+        'Annual Income', 'Marital Status', 'Spouse Name', 'Blood Type', 'Medical Conditions',
+        'Bank Name', 'Account Type', 'Credit Score', 'Credit Card Type', 'Credit Card Number', 
+        'Credit Card Expiry', 'Credit Card CVV', 'Criminal Record'
       ];
       
       const csvContent = [
@@ -68,7 +67,6 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
           `"${profile.pronouns}"`,
           `"${profile.sexualOrientation}"`,
           `"${profile.ethnicity}"`,
-          `"${profile.spokenLanguages}"`,
           `"${profile.email}"`,
           `"${profile.phone}"`,
           `"${profile.address}"`,
@@ -87,18 +85,6 @@ export function ExportActions({ profiles, currentProfile }: ExportActionsProps) 
           `"${profile.annualIncome}"`,
           `"${profile.maritalStatus}"`,
           `"${profile.spouseName || ''}"`,
-          `"${profile.linkedinUrl}"`,
-          `"${profile.twitterUrl}"`,
-          `"${profile.instagramUrl}"`,
-          `"${profile.githubUrl}"`,
-          `"${profile.facebookUrl}"`,
-          `"${profile.tiktokUrl}"`,
-          `"${profile.youtubeUrl}"`,
-          `"${profile.discordUrl}"`,
-          `"${profile.redditUrl}"`,
-          `"${profile.snapchatUrl}"`,
-          `"${profile.onlyfansUrl}"`,
-          `"${profile.datingUrl}"`,
           `"${profile.bloodType}"`,
           `"${profile.medicalConditions}"`,
           `"${profile.bankName}"`,
@@ -153,8 +139,6 @@ Birth Gender: ${profile.birthGender}
 Gender Identity: ${profile.genderIdentity} (${profile.pronouns})
 Sexual Orientation: ${profile.sexualOrientation}
 Ethnicity: ${profile.ethnicity}
-Nationality: ${profile.nationality}
-Spoken Languages: ${profile.spokenLanguages}
 Marital Status: ${profile.maritalStatus}${profile.spouseName ? ` to ${profile.spouseName}` : ''}
 
 CONTACT INFORMATION
@@ -184,12 +168,6 @@ LinkedIn: ${profile.linkedinUrl}
 Twitter: ${profile.twitterUrl}
 Instagram: ${profile.instagramUrl}
 GitHub: ${profile.githubUrl}
-Facebook: ${profile.facebookUrl}
-TikTok: ${profile.tiktokUrl}
-YouTube: ${profile.youtubeUrl}
-Discord: ${profile.discordUrl}
-Reddit: ${profile.redditUrl}
-Snapchat: ${profile.snapchatUrl}
 OnlyFans: ${profile.onlyfansUrl}
 Dating: ${profile.datingUrl}
 

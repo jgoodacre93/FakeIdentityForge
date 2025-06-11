@@ -13,8 +13,6 @@ import {
   usStates,
   banks,
   creditCardTypes,
-  languages,
-  criminalRecordOptions,
   getRandomElement,
   getRandomNumber,
   getRandomBoolean
@@ -80,7 +78,7 @@ function generateCreditCardCvv(cardType: { name: string; prefix: string; length:
   return Array.from({ length: cvvLength }, () => getRandomNumber(0, 9)).join('');
 }
 
-export function generateIdentityProfile(options?: { criminalRecordType?: string }): InsertIdentityProfile {
+export function generateIdentityProfile(): InsertIdentityProfile {
   const birthGender = getRandomElement(["Male", "Female"]);
   const genderData = getRandomElement(genderIdentities);
   const firstName = getRandomElement(firstNames);
@@ -120,17 +118,7 @@ export function generateIdentityProfile(options?: { criminalRecordType?: string 
   const creditCardExpiry = generateCreditCardExpiry();
   const creditCardCvv = generateCreditCardCvv(cardType);
   
-  // Handle criminal record based on options
-  let criminalRecordType: string;
-  let hasCriminalRecord: boolean;
-  
-  if (options?.criminalRecordType) {
-    criminalRecordType = options.criminalRecordType;
-    hasCriminalRecord = criminalRecordType !== "Clean Record";
-  } else {
-    hasCriminalRecord = getRandomBoolean(0.15); // 15% chance
-    criminalRecordType = hasCriminalRecord ? getRandomElement(criminalRecordOptions.filter(option => option !== "Clean Record")) : "Clean Record";
-  }
+  const hasCriminalRecord = getRandomBoolean(0.15); // 15% chance
   
   const heights = [
     "5'2\" (157 cm)", "5'3\" (160 cm)", "5'4\" (163 cm)", "5'5\" (165 cm)",
@@ -164,7 +152,6 @@ export function generateIdentityProfile(options?: { criminalRecordType?: string 
     sexualOrientation: getRandomElement(sexualOrientations),
     ethnicity: getRandomElement(ethnicities),
     nationality: country,
-    spokenLanguages: generateSpokenLanguages(),
     
     email: `${username}@${getRandomElement(["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "protonmail.com"])}`,
     phone: `+1 (${getRandomNumber(200, 999)}) ${getRandomNumber(100, 999)}-${getRandomNumber(1000, 9999)}`,
@@ -199,12 +186,6 @@ export function generateIdentityProfile(options?: { criminalRecordType?: string 
     githubUrl: `github.com/${username}`,
     onlyfansUrl: `onlyfans.com/${username}_premium`,
     datingUrl: `seekingarrangement.com/${username}`,
-    facebookUrl: `facebook.com/${username}`,
-    tiktokUrl: `tiktok.com/@${username}`,
-    youtubeUrl: `youtube.com/@${username}`,
-    discordUrl: `${username}#${getRandomNumber(1000, 9999)}`,
-    redditUrl: `reddit.com/u/${username}`,
-    snapchatUrl: `snapchat.com/add/${username}`,
     
     bloodType: getRandomElement(bloodTypes),
     medicalConditions: conditions,
@@ -219,29 +200,9 @@ export function generateIdentityProfile(options?: { criminalRecordType?: string 
     creditCardExpiry,
     creditCardCvv,
     
-    criminalRecord: criminalRecordType,
+    criminalRecord: hasCriminalRecord ? "Has Records" : "Clean Record",
     criminalHistory: hasCriminalRecord ? generateCriminalHistory() : null,
   };
-}
-
-function generateSpokenLanguages(): string {
-  const numLanguages = getRandomNumber(1, 4); // 1-4 languages
-  const selectedLanguages: string[] = [];
-  
-  // Always include English as most common
-  if (getRandomBoolean(0.85)) {
-    selectedLanguages.push("English");
-  }
-  
-  // Add additional languages
-  const availableLanguages = languages.filter(lang => !selectedLanguages.includes(lang));
-  for (let i = selectedLanguages.length; i < numLanguages && availableLanguages.length > 0; i++) {
-    const randomLang = getRandomElement(availableLanguages);
-    selectedLanguages.push(randomLang);
-    availableLanguages.splice(availableLanguages.indexOf(randomLang), 1);
-  }
-  
-  return selectedLanguages.join(", ");
 }
 
 function generateBodyMeasurements(): string {
@@ -332,6 +293,6 @@ function generateCriminalHistory(): string {
   return selectedOffenses.join(", ");
 }
 
-export function generateMultipleProfiles(count: number, options?: { criminalRecordType?: string }): InsertIdentityProfile[] {
-  return Array.from({ length: count }, () => generateIdentityProfile(options));
+export function generateMultipleProfiles(count: number): InsertIdentityProfile[] {
+  return Array.from({ length: count }, () => generateIdentityProfile());
 }
