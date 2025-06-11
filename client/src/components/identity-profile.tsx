@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { getProfileTypeColor, getRiskLevelColor } from "@/lib/profile-colors";
+import { SocialMediaPreview } from "@/components/social-media-preview";
 import { 
   User, 
   Contact, 
@@ -458,6 +459,9 @@ export function IdentityProfileComponent({
           </CollapsibleContent>
         </Collapsible>
       </Card>
+
+      {/* Social Media Preview */}
+      <SocialMediaPreview profile={profile} />
     </div>
   );
 }
