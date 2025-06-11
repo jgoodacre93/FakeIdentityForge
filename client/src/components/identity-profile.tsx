@@ -22,7 +22,12 @@ import {
   Heart,
   Shield,
   CreditCard,
-  Activity
+  Activity,
+  Music,
+  Play,
+  MessageCircle,
+  MessageSquare,
+  Camera
 } from "lucide-react";
 
 interface IdentityProfileProps {
@@ -136,6 +141,10 @@ export function IdentityProfileComponent({
                 <div>
                   <label className="text-sm font-medium text-gray-500">Nationality</label>
                   <p className="text-lg font-medium text-gray-900">{profile.nationality}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Spoken Languages</label>
+                  <p className="text-lg font-medium text-gray-900">{profile.spokenLanguages}</p>
                 </div>
               </div>
             </CardContent>
@@ -321,6 +330,48 @@ export function IdentityProfileComponent({
                     <span className="font-medium text-gray-900">GitHub</span>
                   </div>
                   <span className="text-blue-600">{profile.githubUrl}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <Globe className="text-blue-500 mr-3 w-5 h-5" />
+                    <span className="font-medium text-gray-900">Facebook</span>
+                  </div>
+                  <span className="text-blue-600">{profile.facebookUrl}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <Music className="text-black mr-3 w-5 h-5" />
+                    <span className="font-medium text-gray-900">TikTok</span>
+                  </div>
+                  <span className="text-blue-600">{profile.tiktokUrl}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <Play className="text-red-600 mr-3 w-5 h-5" />
+                    <span className="font-medium text-gray-900">YouTube</span>
+                  </div>
+                  <span className="text-blue-600">{profile.youtubeUrl}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <MessageCircle className="text-indigo-500 mr-3 w-5 h-5" />
+                    <span className="font-medium text-gray-900">Discord</span>
+                  </div>
+                  <span className="text-blue-600">{profile.discordUrl}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <MessageSquare className="text-orange-500 mr-3 w-5 h-5" />
+                    <span className="font-medium text-gray-900">Reddit</span>
+                  </div>
+                  <span className="text-blue-600">{profile.redditUrl}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <Camera className="text-yellow-400 mr-3 w-5 h-5" />
+                    <span className="font-medium text-gray-900">Snapchat</span>
+                  </div>
+                  <span className="text-blue-600">{profile.snapchatUrl}</span>
                 </div>
               </div>
               
