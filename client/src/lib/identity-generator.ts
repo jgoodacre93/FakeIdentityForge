@@ -129,7 +129,7 @@ export function generateIdentityProfile(): InsertIdentityProfile {
     creditScore: getRandomElement(creditScores),
     
     criminalRecord: hasCriminalRecord ? "Has Records" : "Clean Record",
-    criminalHistory: hasCriminalRecord ? generateCriminalHistory() : undefined,
+    criminalHistory: hasCriminalRecord ? generateCriminalHistory() : null,
   };
 }
 

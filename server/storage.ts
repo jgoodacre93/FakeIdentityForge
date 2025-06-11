@@ -72,7 +72,7 @@ export class MemStorage implements IStorage {
       routingNumber: insertProfile.routingNumber,
       creditScore: insertProfile.creditScore,
       criminalRecord: insertProfile.criminalRecord,
-      criminalHistory: insertProfile.criminalHistory,
+      criminalHistory: insertProfile.criminalHistory ?? null,
       createdAt: new Date()
     };
     this.profiles.set(id, profile);
