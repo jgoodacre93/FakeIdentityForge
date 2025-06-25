@@ -1,5 +1,4 @@
-FakeIdentityForge 
-#################
+FakeIdentityForge
 
 
 # Identity Profile Generator
